@@ -1,0 +1,18 @@
+{
+    "name": "vtuber-avatars-websockets",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "index.js"
+    },
+    "type": "module",
+    "dependencies": {
+        "puppeteer": "^23.3.0"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": false,
+        "singleQuote": true
+    }
+}
