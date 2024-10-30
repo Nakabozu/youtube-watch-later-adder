@@ -135,10 +135,18 @@ console.log(
 // 
 for (let thumbnail of thumbnailList) {
     await thumbnail.hover()
+    await pause(50 + Math.floor(Math.random() * 100));
     const kebabMenuForThisThumbnail = await thumbnail.$(kebabMenuSelector)
+    await pause(50 + Math.floor(Math.random() * 100));
     await kebabMenuForThisThumbnail.click();
-    const saveToWatchLaterButton = await page.locator(saveToWatchLaterSelector);
-    setTimeout(()=>{}, 100);
+    await pause(50 + Math.floor(Math.random() * 100));
+    const saveToWatchLaterButton = page.locator(saveToWatchLaterSelector);
+    // wait for 1/4 of a second to 1/2 of a second
+    await pause(50 + Math.floor(Math.random() * 100));
     await saveToWatchLaterButton.click();
 }
 //#endregion
+
+async function pause(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
