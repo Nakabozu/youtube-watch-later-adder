@@ -78,7 +78,7 @@ const hasProgressBar = async (page, numberOfBars = 1) => {
     // In this function, we search for an elements with the id of "overlay"
     // Then we check if there's an element with the id of "progress" and the class "ytd-thumbnail-overlay-resume-playback-renderer"
     // If there's at least one element that meets this criteria, it means there's a progress bar on the page somewhere
-    return await page.evaluate(() => {
+    return await page.evaluate((numberOfBars) => {
         const foundProgressBar =
             document.querySelectorAll('#overlays #progress').length >= numberOfBars
         console.log(
@@ -87,7 +87,7 @@ const hasProgressBar = async (page, numberOfBars = 1) => {
                 : `No progress bar... yet.`
         )
         return foundProgressBar
-    })
+    }, numberOfBars)
 }
 //#endregion
 
