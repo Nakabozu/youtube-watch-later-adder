@@ -63,14 +63,24 @@ async function autoScroll(page, maxScrolls) {
     }, maxScrolls) // pass maxScrolls to the function
 }
 
-const hasProgressBar = async (/** @type {Page} */ page) => {
+/**
+ * Checks if current puppeteer page has at least a certain number of progress bars for the thumbnails.
+ * @param {Page} page A Page object that allows us to interact with content on the website loaded by puppeteer.
+ * @param {number} numberOfBars A threshold for the number of progress bars we expect 
+ * to see to consider us at the bottom of the content.  
+ * Higher means less of a chance that we run into a one-off watched video.
+ * I still have no clue where these one-off watches come from, but without a higher threshold,
+ * they break the scan for the last video in the watch later playlist.
+ * @returns 
+ */
+const hasProgressBar = async (page, numberOfBars = 1) => {
     // page.evaluate runs a JavaScript function within the page that puppeteer has loaded
     // In this function, we search for an elements with the id of "overlay"
     // Then we check if there's an element with the id of "progress" and the class "ytd-thumbnail-overlay-resume-playback-renderer"
     // If there's at least one element that meets this criteria, it means there's a progress bar on the page somewhere
     return await page.evaluate(() => {
         const foundProgressBar =
-            document.querySelectorAll('#overlays #progress').length > 0
+            document.querySelectorAll('#overlays #progress').length >= numberOfBars
         console.log(
             foundProgressBar
                 ? `Found a progress bar!`
@@ -116,7 +126,7 @@ while (!tempHasProgressBar) {
     await setTimeout(() => {
         console.log(`${mT}Scrolling Down Again${ansiR}`)
     }, 1500)
-    tempHasProgressBar = await hasProgressBar(page)
+    tempHasProgressBar = await hasProgressBar(page, 50)
     console.log(
         tempHasProgressBar
             ? `${gT}Found a progress bar!${ansiR}`
